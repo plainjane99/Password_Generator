@@ -4,7 +4,7 @@
 var lowerString = "abcdefghijklmnopqrstuvwxyz";
 var upperString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var numberString = "1234567890";
-var specialString = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+var specialString = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~\\";
 
 // defines other global variables
 var passwordLength;  // variable for password length
@@ -37,7 +37,7 @@ var generatePassword = function() {
   special = specialString.split("");
 
   window.alert("Welcome to Password Generator!");
-
+  
   validLength();
 
   // confirms for which types of characters are required
@@ -111,6 +111,7 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 

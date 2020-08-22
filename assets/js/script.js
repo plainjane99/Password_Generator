@@ -1,10 +1,21 @@
 // Assignment code here
 
-// function that validates the length of the password as between 8 and 128 characters.
+// defines all possible characters per category
+var lowerString = "abcdefghijklmnopqrstuvwxyz";
+var upperString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var numberString = "1234567890";
+var specialString = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+
+// defines other global variables
+var passwordLength;  // variable for password length
+var requiredChar = [];  // variable for array holding required characters
+var passwordResult = [];  // variable for resulting password
+
+// function that validates the length of the password is between 8 and 128 characters.
 var validLength = function() {
 
   // ask user for password length //
-  var passwordLength = window.prompt("Choose the length of your password between 8 and 128 characters.");
+  passwordLength = window.prompt("Choose the length of your password between 8 and 128 characters.");
 
   // conditional recursive function call
   if(passwordLength < 8 || passwordLength > 128 || passwordLength === "" || passwordLength === null) {
@@ -16,74 +27,96 @@ var validLength = function() {
   
 }
 
-// function that starts Password Generator
+// function that runs Password Generator
+var generatePassword = function() {
 
-var runGen = function() {
+  // turns strings into arrays
+  lower = lowerString.split("");
+  upper = upperString.split("");
+  number = numberString.split("");
+  special = specialString.split("");
 
   window.alert("Welcome to Password Generator!");
-
-  debugger;
 
   validLength();
 
   // confirms for which types of characters are required
-  lowercase = window.confirm("Would you like to include lowercase?");
-  uppercase = window.confirm("Would you like to include uppercase?");
-  numerals = window.confirm("Would you like to include numbers?");
-  specialChar = window.confirm("Would you like to include special characters?");
+  var lowercase = window.confirm("Would you like to include lowercase?");
+  var uppercase = window.confirm("Would you like to include uppercase?");
+  var numerals = window.confirm("Would you like to include numbers?");
+  var specialChar = window.confirm("Would you like to include special characters?");
 
-  // defines possible characters 
-  var charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
-  var characters = charString.split("");
+  // successive if's to systematically add possibilities as requested by user
 
-  // lowercase letters are indices 0 through 25, min = 0, max = 26
-  // uppercase letters are indices 26 through 51, min = 26, max = 51
-  // numbers are indices 52 through 61, min = 52, max = 61 
-  // special characters are indices 62 through 91, min = 62, max = 91
+  if (lowercase) {
 
-  // log a message to the console to confirm the split works
-  console.log(characters[91]);
+    // add all lowers to requiredChar array
+    requiredChar = requiredChar.concat(lower);
 
-  // for lowercase only
+    // add an initial lower to meet requirements
+    index = Math.floor(Math.random()*lower.length);
+    passwordResult = passwordResult.concat(lower[index]);
 
-  // this is to make the code work only.  delete after problem is fixed
-  passwordLength = 8;
-  // this is to make the code work only.  delete after problem is fixed
-
-  for (var i = 1; i <= passwordLength; i++) {
-    index = randomNumber(0, 26);
-    
-    // characters[index];
-    console.log(characters[index]);
   }
 
+  if (uppercase) {
+
+    // add all uppers to requiredChar array
+    requiredChar = requiredChar.concat(upper);
+
+    // add an initial lower to meet requirements
+    index = Math.floor(Math.random()*upper.length);
+    passwordResult = passwordResult.concat(upper[index]);
+
+  }
+
+  if (numerals) {
+
+    // add all uppers to requiredChar array
+    requiredChar = requiredChar.concat(number);
+
+    // add an initial lower to meet requirements
+    index = Math.floor(Math.random()*number.length);
+    passwordResult = passwordResult.concat(number[index]);
+
+  }
+
+  if (specialChar) {
+
+    // add all uppers to requiredChar array
+    requiredChar = requiredChar.concat(special);
+
+    // add an initial lower to meet requirements
+    index = Math.floor(Math.random()*special.length);
+    passwordResult = passwordResult.concat(special[index]);
+
+  }
+
+  // fills out the remaining requirements of password length
+
+  for (i = passwordResult.length; i < passwordLength; i++) {
+
+    index = Math.floor(Math.random()*requiredChar.length);
+    passwordResult = passwordResult.concat(requiredChar[index]);
+
+  }
+
+  passwordResult = passwordResult.join("");
+
+  return(passwordResult);
 }
-
-// random number generator for indices
-var randomNumber = function(min, max) {
-  var value = Math.floor(Math.random() * (max - min) + min);
-  return value;
-}
-
-
-
-runGen();
-
-// var writePassword = function() {
-
-// }
 
 // Get references to the #generate element
-// var generateBtn = document.querySelector("#generate");
+var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
-// function writePassword() {
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
 
-//   passwordText.value = password;
+  passwordText.value = password;
 
-// }
+}
 
 // Add event listener to generate button
-// generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", writePassword);
